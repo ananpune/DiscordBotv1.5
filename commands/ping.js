@@ -5,6 +5,9 @@ module.exports = {
 
     },
     run: ({ interaction }) => {
-        interaction.reply('Pong!');
+        //return ping of bot
+
+        interaction.reply("My ping is:" + Math.round(interaction.client.ws.ping) + "ms");
+
     }
 };
