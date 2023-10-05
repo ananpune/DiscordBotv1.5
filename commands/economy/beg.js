@@ -1,12 +1,14 @@
 const Cooldown = require('../../schemas/Cooldown');
 const UserProfile = require('../../schemas/UserProfile');
 
+//function to get a Random number
 function getRandomNumber(min, max) {
     const range = max - min + 1;
     const randomNumber = Math.floor(Math.random() * range) + min;
     return randomNumber;
 }
 module.exports = {
+    //same idea as always, looking to only let command be used in a server
     run: async({ interaction }) => {
         if (!interaction.inGuild()) {
             await interaction.reply({
@@ -26,6 +28,8 @@ module.exports = {
                 const { default: prettyMs } = await
                 import ('pretty-ms');
                 await interaction.editReply(`You can beg again in ${prettyMs(cooldown.endsAt - Date.now())}`);
+                return;
+
             }
             if (!cooldown) {
                 cooldown = new Cooldown({ userId, commandName });
@@ -43,17 +47,21 @@ module.exports = {
             }
 
             const amount = getRandomNumber(20, 100);
+
             let userProfile = await UserProfile.findOne({ userId }).select('userId balance');
+            //trying to find the userProfile for the person using command
 
 
             if (!userProfile) {
+                //if no profile exists, one is made for the user
                 userProfile = new UserProfile({ userId });
 
             }
+            //balance update
             userProfile.balance += amount;
             cooldown.endsAt = Date.now() + 300000;
 
-            await Promise.all([cooldown.save(), UserProfile.save]);
+            await Promise.all([cooldown.save(), userProfile.save()]);
             await interaction.editReply(`You begged for money and got ${amount} coins`);
 
 

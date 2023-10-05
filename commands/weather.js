@@ -1,11 +1,13 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const weather = require('weather-js');
-
+//trying Slash Command and Embed Builder over js commander, followed tutorial from https://www.youtube.com/watch?v=7rU_KyudGBY. However added some changes. 
+//Slash command builder is a bit more complex than js commander, but it is more flexible and allows for more customization in one space.
 module.exports = {
     data: new SlashCommandBuilder()
+        //command name and description
         .setName('weather')
         .setDescription('Get the weather for a location')
-
+        // city and unit of temperature
         .addStringOption(option => option.setName('location').setDescription('The location to get the weather for').setRequired(true))
         .addStringOption(option => option.setName('unit').setDescription('The unit to get the weather in').setRequired(true).addChoices({ name: 'Celsius', value: 'C' }, { name: 'Fahrenheit', value: 'F' })),
     run: async({ interaction }) => {

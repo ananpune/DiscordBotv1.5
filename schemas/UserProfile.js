@@ -1,6 +1,6 @@
 const { Schema, model } = require('mongoose');
 
-
+//essentially a Class that holds a UserProfile and connects us to our MongoDB
 const UserProfileSchema = new Schema({
 
         userId: {
@@ -25,5 +25,5 @@ const UserProfileSchema = new Schema({
     }, { timestamps: true }
 
 );
-
+//exporting the model so we can use it in other files
 module.exports = model('UserProfile', UserProfileSchema);
